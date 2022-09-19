@@ -86,4 +86,15 @@ async function getCurrentPrice(price) {
     }
 }
 
-export { loadMetadata, getItemActivity, getPriceHistory, getCurrentPrice }
+async function loadCID(txHash) {
+    const res = await web3.eth.getTransactionReceipt(txHash);
+    const tokenId = web3.utils.hexToNumber(res.logs[0].topics[3]);
+    const metadata = await web3.alchemy.getNftMetadata({
+        contractAddress: contractAddress,
+        tokenId: tokenId,
+    })
+    // console.log(metadata)
+    return metadata
+}
+
+export { loadMetadata, getItemActivity, getPriceHistory, getCurrentPrice, loadCID }
