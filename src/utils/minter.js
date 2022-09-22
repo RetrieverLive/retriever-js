@@ -7,55 +7,6 @@ const alchemyKey = ""
 const web3 = createAlchemyWeb3(alchemyKey)
 const contractAddress = '0xc1D81f8be4AF8B446390384428EbC75B59246CDC'
 
-async function loadMetadata(txHash) {
-    const tx = await web3.eth.getTransactionReceipt(txHash)
-    const tokenId = web3.utils.hexToNumber(tx.logs[0].topics[3])
-    const metadata = await web3.alchemy.getNftMetadata({
-        contractAddress: contractAddress,
-        tokenId: tokenId,
-    })
-    
-    window.contract = new web3.eth.Contract(contractABI, contractAddress)
-    let nftActivity = await window.contract.getPastEvents("allEvents", { fromBlock:0, toBlock:'latest', })
-    const owner = await window.contract.methods.ownerOf(tokenId).call()
-    const price = await window.contract.methods.priceOf(tokenId).call()
-    const data = {
-        metadata: metadata.metadata,
-        contractAddr: contractAddress,
-        tokenId: tokenId,
-        tokenStd: metadata.id.tokenMetadata.tokenType,
-        owner: owner,
-        price: web3.utils.fromWei(price),
-        activities: nftActivity
-    }
-
-    console.log(tx["value"])
-    console.log(tx.logs[0])
-    for (let activity of nftActivity) {
-        // console.log(activity.returnValues)
-        if (activity.returnValues.tokenId == tokenId) {
-            let txs = await web3.eth.getTransaction(activity.transactionHash)
-            console.log(txs)
-            // console.log(web3.utils.fromWei(txs.effectiveGasPrice))
-            // console.log(txs["value"])
-            // console.log(activity.transactionHash)
-        }
-    }
-
-    return new Promise((resolve) => {
-        resolve(data)
-    })
-}
-
-async function loadNftPrice(txHash) {
-    const tx = await web3.eth.getTransactionReceipt(txHash)
-    const tokenId = web3.utils.hexToNumber(tx.logs[0].topics[3])
-    const price = await window.contract.methods.priceOf(tokenId).call()
-    return new Promise((resolve) => {
-        resolve(price)
-    })
-}
-
 // mintNFT mints metadata of the uploaded video
 async function mintNFT (cid, title, thumbnail) {
     // error handling
@@ -110,4 +61,4 @@ async function mintNFT (cid, title, thumbnail) {
     }
 }
 
-export { mintNFT, loadMetadata, loadNftPrice }
+export { mintNFT }
