@@ -94,7 +94,10 @@ async function loadCID(txHash) {
         tokenId: tokenId,
     })
     // console.log(metadata)
-    return metadata
+    // return metadata
+    return new Promise((resolve) => {
+        resolve(metadata)
+    })
 }
 
 export { loadMetadata, getItemActivity, getPriceHistory, getCurrentPrice, loadCID }
