@@ -1,7 +1,7 @@
 import { pinJSONToIPFS } from './pinata.js'
 import { createAlchemyWeb3 } from "@alch/alchemy-web3"
 // import contractABI from './nft-abi.json'
-import contractABI from './test-abi.json'
+import contractABI from '../test-abi.json'
 
 const alchemyKey = ""
 const web3 = createAlchemyWeb3(alchemyKey)
