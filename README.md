@@ -1,2 +1,2 @@
-# dens-js
-JavaScript-based DeNS SDK for Video NFT marketplace.
+# retriever-js
+JavaScript-based Retriever SDK for Video NFT marketplace.
