@@ -2,7 +2,7 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3"
 import contractABI from '../test-abi.json'
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY
 const web3 = createAlchemyWeb3(alchemyKey)
-const contractAddress = "0xc1D81f8be4AF8B446390384428EbC75B59246CDC"
+const contractAddress = "0xAB8c361D9f7Fd5f0C32261F625a7C181adD6C5e5"
 
 async function loadMetadata(txHash) {
     const tx = await web3.eth.getTransactionReceipt(txHash)

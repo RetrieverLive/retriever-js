@@ -3,17 +3,24 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3"
 // import contractABI from './nft-abi.json'
 import contractABI from '../test-abi.json'
 
-const alchemyKey = ""
+const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY
 const web3 = createAlchemyWeb3(alchemyKey)
-const contractAddress = '0xc1D81f8be4AF8B446390384428EbC75B59246CDC'
+const contractAddress = '0xAB8c361D9f7Fd5f0C32261F625a7C181adD6C5e5'
 
 // mintNFT mints metadata of the uploaded video
-async function mintNFT (cid, title, thumbnail) {
+async function mintNFT (cid, title, thumbnail, proposedPrice) {
     // error handling
     if ((title.trim() === "")) {
         return {
             success: false,
             status: "❗️ Please make sure all fields are completed before minting.",
+        }
+    }
+
+    if (!(proposedPrice > 0)) {
+        return {
+            success: false,
+            status: "❗️ You must enter a price more than 0.",
         }
     }
 
@@ -35,12 +42,11 @@ async function mintNFT (cid, title, thumbnail) {
     window.contract = await new web3.eth.Contract(contractABI, contractAddress)
 
     // set up your Ethereum transaction
-    // const price = web3.utils.toWei('1', 'ether')
+    const price = web3.utils.toWei(proposedPrice, 'ether')
     const transactionParameters = {
         to: contractAddress, // Required except during contract publications.
         from: window.ethereum.selectedAddress, // must match user's active address.
-        data: window.contract.methods.mintNFT(tokenURI).encodeABI() // make call to NFT smart contract
-        // data: window.contract.methods.mintNFT(tokenURI, price).encodeABI() // make call to NFT smart contract
+        data: window.contract.methods.mintNFT(tokenURI, price).encodeABI() // make call to NFT smart contract
     }
 
     try {
